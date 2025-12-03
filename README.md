@@ -1,4 +1,4 @@
-# Internship Work Log
+# 👑Internship Work Log👑
 
 This repository contains my daily work logs during my internship.
 
