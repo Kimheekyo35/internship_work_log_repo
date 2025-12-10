@@ -11,4 +11,42 @@
 
 💫✏️📌
  - crawling할 때 우회를 어떻게 하는 지 고민하는 태도가 필요. (이러한 태도를 기르라고 말씀해주심)
- - 
+ - 팝업창이 뜰 경우, 새로고침 (driver.refresh()) 로 해결
+ - 알려주신 크롤링 '우회' 방법도 공부해보기
+
+❓오늘 코드에서 궁금했던 점
+ - time.sleep 과 WebDriverWait의 차이
+ - seleniumbase가 뭔지
+
+# time.sleep과 WebDriverWait의 차이
+
+time.sleep
+- time.sleep(n)
+  스레드를 n초 동안 강제로 멈춤
+  Selenium 상황과 관계없이 무조건 기다림
+  비효율적 → 가능한 사용 지양
+
+implicitly_wait(n)
+- implicitly_wait(n)
+  find_element가 요소를 찾을 때까지 최대 n초 반복 시도
+  요소 탐색 호출에만 동작됨
+  조건을 기다릴 수 없고 제어가 어려워서 실무에서는 잘 안 씀
+
+explicitly_wait(n)
+-  특정한 element를 찾을 때까지 대기
+ex) wait = WebDriverWait(Driver,10)
+    element = wait.until(EC.element_to_be_clickable((By.ID,'someid')))
+-> 대기 시간은 10으로 설정했지만 내가 찾고자하는 element를 찾는다면 바로 실행됨을 의미!
+
+# seleniumbase 란? 기존 Selenium WebDriver를 쉽게 쓸 수 있게 래핑해놓은 프레임워크
+ 
+ with SB() as sb 로 바로 크롬 실행 가능.
+ with SB(uc=True, local='ko', headless=True)로 설정하면
+ uc-> 우회하는 데 사용
+
+ sb.open() = driver.get(url) 대신 사용
+
+ sb.uc_gui_click_captcha() -> 자동화 탐지를 막기 위해 나오는 GUI 기반 캡챠를 우회하는 SeleniumBase 내장 기능.
+ Undetected Chrome을 사용하는 경우에도 여전히 캡챠 우회가 필요할 수 있기 때문에 자주 사용됨.
+
+ seleniumbase 환경에서는 driver대신 sb.driver. 를 사용하여 driver역할을 대신함.
