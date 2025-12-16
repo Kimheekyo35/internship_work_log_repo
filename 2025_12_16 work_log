@@ -1,0 +1,98 @@
+# 2025_12_11 work_log
+
+🔥 금일 목표
+ - 12개의 국외 사이트 랭킹이 바뀌는 시간 파악하기
+ - 서버에서 랭킹과 상품명, 가격을 크롤링하고 postgresql db저장까지 마무리
+
+🚦 업무 순서
+ - 하루동안 돌아간 결과들을 보고, 5분 - 10분으로 파일 실행 텀을 조정함
+ - 기존에 짜여진 아마존 코드에서 이메일 전송 코드 수정 및 스키마와 테이블 만들기
+ - db 적재까지 마무리
+
+🚨 문제점
+ - 서버에서 selenium을 실행시켜하는데 chromium의 path가 잘못됨
+ - 그리고 chrome-driver와 chromium의 버전 불일치 문제로 오류 발생함
+
+💫✏️📌 (문제점을 해결할 수 있는 방법,, 내일 가서 해보기)
+
+1. 수동으로 chromium + chromedriver 맞추는 방법
+  -  “브라우저 버전과 드라이버 버전을 내가 직접 관리”
+  1️⃣ Chromium 설치 (snap)
+  `sudo snap install chromium`
+  확인: /snap/bin/chromium --version
+  
+  2️⃣ Chromium 버전에 맞는 chromedriver 설치
+  `sudo apt update
+   sudo apt install -y chromium-chromedriver`
+   
+  3️⃣ Selenium 코드 (⭐ binary_location 필수)
+  ------------------------------------------------------------
+  options = Options()
+  
+ ` options.binary_location = "/snap/bin/chromium" `
+  options.add_argument("--headless=new")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  
+ `service = Service("/usr/bin/chromedriver")`
+  
+  driver = webdriver.Chrome(service=service, options=options)  |
+  --------------------------------------------------------------
+2. Selenium Manager 사용하는 방법 (⭐)
+  “드라이버는 Selenium이 알아서 관리”
+
+  1️⃣ Selenium 완전 삭제 (깨끗하게)
+  1. 현재 설치 상태 확인
+  `pip show selenium`
+  
+  2. Selenium 제거
+  pip uninstall -y selenium
+
+  2️⃣ chromedriver 흔적 제거 (⭐ 중요)
+  
+  Selenium Manager가 방해받지 않게 PATH에 있는 chromedriver 제거
+  `which chromedriver`
+
+  (만약 어떤 코드가 나온다면)
+  sudo mv /usr/bin/chromedriver /usr/bin/chromedriver.bak
+  hash -r
+
+  3️⃣ Selenium 최신 버전 설치 (Manager 포함)
+  - version은 4.6이상이어야 함
+
+  4️⃣ Chromium 설치 확인
+  snap list | grep chromium
+
+  5️⃣ PATH에 /snap/bin 없으면 추가
+  echo 'export PATH="/snap/bin:$PATH"' >> ~/.bashrc
+  source ~/.bashrc
+  
+  6️⃣ Selenium 코드
+  
+  ❌ Service() 쓰지 말 것
+  ❌ chromedriver 경로 지정 ❌
+  --------------------------------------------------------
+  from selenium import webdriver    
+  from selenium.webdriver.chrome.options import Options
+  
+  options = Options()
+  options.binary_location = "/snap/bin/chromium"
+  
+  options.add_argument("--headless=new")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  
+  driver = webdriver.Chrome(options=options)
+  -------------------------------------------------------
+
+3. 내가 이전 ec2 환경에서 할 때 사용했던 코드
+  ------------------------------------------------------
+  service=Service(executable_path='/home/ubuntu/chromedriver-linux64/chromedriver')
+  
+  options = webdriver.ChromeOptions()
+  
+  options.add_argument('--no-sandbox')
+  options.add_argument('--headless=new')
+  options.add_argument('--disable-dev-shm-usage')
+  driver = webdriver.Chrome(service=service,options=options)
+  -------------------------------------------------------
