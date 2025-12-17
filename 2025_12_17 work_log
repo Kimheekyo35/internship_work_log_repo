@@ -1,0 +1,19 @@
+#2025_12_17 work_log
+
+🔥 금일 목표
+ - 로컬에서 3개 url 크롤링 진행, 이후 로컬에서 db 저장까지 완료
+
+🚦 업무 순서
+ - psql에서 CREATE DATABASE crawling_db; 생성
+ - channel별 python파일을 만들어서 크롤링 진행
+ - 로컬에서 진행 후, db에 문제없이 쌓이면 서버에서 진행
+
+🚨 문제점
+ - 어떤 url을 크롤링해야하는 지 까먹어서 시간 날림
+ - 팝업창 때문에 원하는 element를 못 찾는다고 생각했지만, selenium은 그거랑 상관없이 크롤링 가능.
+ - seleniumbase 에서 button을 제대로 못 찾음
+
+💫✏️📌
+ - 현재 예스스타일 크롤링 결과 로컬 postgresql에 저장까지만 완료
+ - postgresql을 공부 필요
+ - 이미 짜여진 코드를 codex로 주석 달아서 이해하기
