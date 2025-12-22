@@ -1,0 +1,51 @@
+# 2025_12_22 work_log
+
+🔥 금일 목표
+ - 서버에서 각 페이지 크롤링과 DB 생성하기
+
+🚦 업무 순서
+ - 로컬에서 크롤링한 결과 DB 저장
+ - DB에서 원하는 데이터가져와 페이지별로 개별 sheet로 엑셀에 저장
+ - 서버에서 DATABASE와 스키마 이름만 바꿔서 실행시키기  
+
+🚨 문제점
+- cloudfare때문에 제대로 stylevana 페이지가 크롤링되지 않음
+
+💫✏️📌
+- postgreSQL에서 DATA를 갖고오고 어떻게 excel로 개별 sheet 만드는지 배움
+- app password를 받고 .env에 입력해서 이메일 보내는 방법 배움
+- seleniumbase는 서버에서 제대로 실행되지 않음 (catcha가 계속 걸렷,,)
+- 일반 selenium과 9222 attach 방식 차이
+
+🔹 일반 Selenium
+Selenium → ChromeDriver → 새 Chrome 실행
+
+🔹 9222 attach 방식
+Selenium → ChromeDriver → (attach) 기존 Chrome (9222)
+크롬을 우선 띄우고 내가 쓰던 크롬을 이어 붙이는 방식
+
+하지만 9222 attach를 seleniumbase 환경에서 실행시키는 건 CAPTCHA 뚫지 못함,,
+
+⚡ beautifulsoup로 url 그대로 가져와서 html을 파싱하는 건?
+-> requests.get(url) 을 사용하는데 CAPTCHA나 cloudfare가 이미 요청을 거부해서 가져올 수가 없음..
+
+Nodriver 사용해보기
+
+----예시 코드------
+import nodriver as nd
+
+async def main():
+    browser = await nd.launch(
+        headless=False,           # 가능하면 headed
+        user_data_dir="/tmp/nd-profile",
+        args=[
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+        ]
+    )
+
+    page = await browser.get("https://target-site.com")
+    await page.sleep(10)
+
+nd.run(main)
+--------------------
