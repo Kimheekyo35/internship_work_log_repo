@@ -1,0 +1,20 @@
+#2025_12_29 work_log
+
+🔥 금일 목표
+- 크롤링 컴퓨터에 있는 파이썬 파일들 서버로 옮기기
+
+🚦 업무 순서
+1. 주말동안 안 돌아간 파일들 수정
+2. test 실행
+3. crontab으로 자동화하여 서버에서 실행
+
+🚨 문제점
+1. 주말동안 안 돌아간 원인 -> 다음부턴 확실하게 점검
+  - twitter의 경우, email을 보내기 위한 Optional,Tuple,List 라이브러리를 추가하지 않음)
+  - suncream의 경우, 이메일 보내는 값을 false로 설정
+2. qoo10의 크롤링 결과가 제대로 나오지 않음
+
+💫✏️📌
+- qoo10의 경우 크롤링이 17개까지만 됨 -> playwright나 selenium을 써서 오류 해결 계획 (selenium 너무 느림)
+- python3 -m venv .venv : 리눅스에서 가상환경 만드는 코드
+- deactivate : 가상환경 끄기
