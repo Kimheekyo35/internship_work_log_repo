@@ -1,0 +1,36 @@
+# 2025_12_30 work_log
+
+🔥 금일 목표
+- qoo10 페이지를 playwright로 수정하고 서버에서 실행시키기
+
+🚦 업무 순서
+1. playwright 기본 코드 숙지
+2. qoo10의 html 구조보고 판매량, 판매샵, 채널, 카테고리 가져오기
+
+🚨 문제점
+1. sync_playwright랑 async를 섞어서 써서 코드가 안 됨
+ - ❌ sync API + await → 무조건 에러
+ - 완전 sync로 통일 또는 완전 async로 통일
+
+2. async def main()이 실행되지 않음
+ - 실행 방법: asyncio.run(main())
+ 
+💫✏️📌
+1. async과 await
+ - async: “이 함수 안에는 기다릴 일이 있다”
+ - await: 작업이 끝날 때까지 기다리기 ( ✅ await = “이 줄만 잠깐 대기” 🔥 그 시간 동안 이벤트 루프는 다른 일 처리 가능)
+ 
+2. 비동기식과 동기식
+- 동기식: 직렬과 같음. 하나하나 일 끝내기
+- 비동기식: 병렬과 같음. 여러 일을 동시에 가능 ( 기다릴 일은 예약, 그동안 다른 일 처리)
+
+3. list comprehension 안에서 조건 / 길이 제한 (❌ list comprehension 자체에는 break 불가)
+- ex) product_list = product_list[:max_count] 가 가장 깔끔
+
+4. Playwright에서 클릭하고 뒤로 가기
+✔ 뒤로 가기 + 로딩 대기
+- await page.go_back(wait_until = 'networkidle')
+
+5. DOMContentLoaded란?
+- HTML 구조(DOM)가 전부 만들어진 시점
+Q10_crawling.py 에서는 detail_page.goto(url, wait_until="domcontentloaded", timeout=60000) 이 코드를 사용하여 판매샵 정보를 가져옴
