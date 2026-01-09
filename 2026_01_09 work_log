@@ -28,6 +28,7 @@
   => page.locator("input[name='text']").type(ID,delay=150)
 
 - get_by_role 은 "접근성 역할"을 기준으로 요소를 찾는 것
+- <button role="button" ''''''''> 였으면 get_by_role("button") 으로 잡힘
 |------HTML-----------|-----접근성role-----.|
 |    <button>         |       button       |
 |    <a href =" "     |       link         |
