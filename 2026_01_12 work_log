@@ -1,0 +1,6 @@
+2026-01-12 01:47:11 - WARNING - [넘] 5라인 신제품 2종 온에어 리스트: https://x.com/patorassyaaa/status/2001645957071679854 수집 실패 (Page.goto: Navigation to "https://x.com/patorassyaaa/status/2001645957071679854" is interrupted by another navigation to "chrome-error://chromewebdata/"
+Call log:
+  - navigating to "https://x.com/patorassyaaa/status/2001645957071679854", waiting until "domcontentloaded"
+)
+
+에러 발생 
