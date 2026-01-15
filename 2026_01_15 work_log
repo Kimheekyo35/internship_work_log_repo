@@ -1,0 +1,23 @@
+# 2026_01_15 work_log
+
+오늘 해결한 문제:
+올리브영 크롤링할 때 shadow-root가 존재했음. -> JS로 해결 가능함
+  ---------------------------------------------------------------------      
+| const outer = document.querySelector('oy-review-review-in-product'); |
+| if (!outer || !outer.shadowRoot) return 'NO_OUTER_OR_ROOT1';         |
+  ---------------------------------------------------------------------
+-> 이 코드는 shadow-root 하단에 없을 때 이 방식으로 찾음 (shadowRoot가 없음)
+
+반대로, shadowRoot 자식 노드에 위치해있다면 아래와 같이 shadowRoot를 붙여줘야 함.
+  --------------------------------------------------------------------------------------
+| const provider = outer.shadowRoot.querySelector('oy-review-product-review-provider'); |
+| if (!provider || !provider.shadowRoot) return 'NO_PROVIDER_OR_ROOT2';                 |
+  --------------------------------------------------------------------------------------
+
+각 제품에서 상단 5개의 리뷰를 가져왔어야 함. 따라서 5개의 리뷰가 담긴 리스트 하나를 만들고 모든 제품의 리뷰들을 담을 수 있는
+또 다른 리스트를 만들어서 데이터를 저장함.
+
+오늘 배운 점: shadow-root 방식을 처음 알았음 (코드가 복잡해지는 걸 방지하기 위해서 쓴다고 함. open이라 JS로 크롤링이 가능했고 크롤링을 하기 위해선 기본적인 JS를 아는 것도 중요하다고 생각함.
+from pyshadow.main import Shadow 도 새롭게 배웠음
+-> 이 방식도 shadow-root 방식에서 쓸 순 있지만, 구조가 복잡하지 않고 1개 정도 있을 때 쓰기 좋은 것. 올리브영의 경우 스크롤을 내려야 원하는 구조가 나왔고 약 5~6개의 shadow-root를 지나야 원하는 text가 나와서
+pyshadow보다 JS가 정확하게 작동함.
