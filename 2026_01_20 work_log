@@ -1,0 +1,18 @@
+#2026_01_20 work_log
+
+airflow 설치 과정
+
+- 가상환경 설치
+python3 -m venv airflow_env
+source airflow_env/bin/activate
+
+- Airflow 설치
+export AIRFLOW_HOME=~/airflow
+pip install apache-airflow
+
+- 데이터베이스 초기화
+airflow db init  --> airflow db migrate
+
+- 서버 웹 열기
+export AIRFLOW__WEBSERVER__WEB_SERVER_PORT=8081 로 하여 포트 변경 (standalone을 하면 기본적으로 8080 포트 사용)
+airflow db standalone
