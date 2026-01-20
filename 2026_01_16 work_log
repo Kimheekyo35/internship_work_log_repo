@@ -1,0 +1,72 @@
+# 2026_01_16 work_log
+
+1️⃣ Playwright 기본 개념 & 헷갈렸던 포인트
+✅ range()와 locator.nth()
+- range(n) → 0부터 시작
+- locator.nth(i) → 0-based index
+
+```
+for i in range(min(count, 5)):
+    locator.nth(i)
+```
+-> 0부터 시작하는 게 맞음
+
+✅ .all() vs count() + nth()
+|.all()|
+❌ 그 시점 DOM 스냅샷
+❌ 동적 로딩 페이지에서 위험
+
+```
+for i in range(locator.count()):
+    locator.nth(i)
+```
+|count() + nth()|
+✅ live reference
+✅ Playwright 정석
+👉 Playwright에서는 .all() 거의 쓰지 말 것
+
+2️⃣ append vs extend
+self.href_list.extend(href)
+  ❌ 문자열은 iterable → 한 글자씩 들어감
+
+✅ 문자열 하나를 요소 하나로 추가
+👉 문자열은 무조건 append
+
+3️⃣ URL / 문자열 처리
+URL에서 브랜드 이름을 가져오고자 함.
+-> urlparse 아니면 str.split() 쓰는 방식이 존재
+```
+def extract_product(path):
+    return path.strip("/").split("/")[1]
+```
+
+4️⃣ 리뷰 크롤링에서 가장 중요한 포인트
+✅ inner_text() vs text_content()
+
+👉 리뷰/데이터 수집 = text_content()가 정답
+text_content() -> DOM 텍스트 전부
+inner_text() -> 화면에 보이는 텍스트 전부
+
+5️⃣ Selector 스코프 문제 (전체 페이지에서 잡히는 이유)
+ex) "tbody.center tr[class^='xans-record-']" 이렇게 적을 경우 페이지에 있는 xans-record- 모두 추출됨
+
+✅ 해결 핵심
+부모 locator로 스코프 고정
+review_area = self.page.locator("#prdReview")
+tr_rot = review_area.locator("tr[class^='xans-record-']")
+-> 이렇게 작성하면 우선 테이블을 잡고 테이블 안에 있는 class를 잡을 수 있음
+
+🎭 금일 발생한 에러
+EPIPE 에러가 발생함
+
+EPIPE 에러:
+EPIPE 에러 의미
+
+Playwright(Node driver)가 먼저 죽음
+Python ↔ Node 통신 파이프 끊김
+화면이 떠 있어도 ❌ 정상 아님
+
+이후 동작은 신뢰 불가
+발생 시 세션 폐기해야 함
+
+하지만 locator가 제대로 요소를 못 찾고 playwright의 화면이 꺼져서 통신이 끊겼다고 생각함 -> review를 찾는 루트를 재설정하니 웹이 꺼지지 않고 정상적으로 작동함
