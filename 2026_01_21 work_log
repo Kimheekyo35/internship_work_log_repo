@@ -43,3 +43,15 @@ airflow db reset -y
 
 스케줄러 상태 확인
 airflow jobs check --job-type SchedulerJob --local
+
+
+
+
+# 문제점
+ui 와 api-server의 포트가 맞지 않았음.
+Tasks는 8080에서 실행시켜야할 부분을 찾고 있었음.
+
+export AIRFLOW__API__BASE_URL="http://localhost:8081"
+export AIRFLOW__CORE__EXECUTION_API_SERVER_URL="http://localhost:8081/execution"
+
+로 써주면 강제로 8081로 설정하게 됨.
