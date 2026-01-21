@@ -36,3 +36,10 @@
   - 변경 후에는 airflow 프로세스 재시작 필요 (서버 reboot 불필요)
 
   ———
+
+db 리셋 방법
+airflow db reset -y
+
+
+스케줄러 상태 확인
+airflow jobs check --job-type SchedulerJob --local
