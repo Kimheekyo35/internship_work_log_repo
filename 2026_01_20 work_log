@@ -14,5 +14,6 @@ pip install apache-airflow
 airflow db init  --> airflow db migrate
 
 - 서버 웹 열기
-export AIRFLOW__WEBSERVER__WEB_SERVER_PORT=8081 로 하여 포트 변경 (standalone을 하면 기본적으로 8080 포트 사용)
-airflow  standalone
+  export AIRFLOW__API__HOST=0.0.0.0
+  export AIRFLOW__API__PORT=8081
+  airflow standalone
