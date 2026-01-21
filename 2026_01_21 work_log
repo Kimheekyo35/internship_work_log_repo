@@ -1,0 +1,38 @@
+  1) 가상환경 활성화
+
+  source /home/linuxuser/wemarketing/fastapi_test/airflow_env/bin/activate
+
+  2) 잘못된 환경변수 제거 (2.x용 webserver 키)
+
+  unset AIRFLOW__WEBSERVER__WEB_SERVER_PORT
+  unset AIRFLOW__WEBSERVER__WEB_SERVER_HOST
+
+  3) Airflow 3.x용 포트 설정 (API 서버가 UI 제공)
+
+  export AIRFLOW__API__HOST=0.0.0.0
+  export AIRFLOW__API__PORT=8081
+
+  4) AIRFLOW_HOME 지정 (cfg/DB 경로 고정)
+
+  export AIRFLOW_HOME=/home/linuxuser/wemarketing/fastapi_test/airflow
+
+  5) (처음이거나 DB 문제 있으면) DB 초기화
+
+  airflow db init
+
+  6) 실행 (standalone이면 scheduler도 같이 뜸)
+
+  airflow standalone
+
+  7) 접속
+
+  - http://localhost:8081
+
+  ———
+
+  문제 발생 시 체크 포인트
+
+  - with DAG(...) 아래 코드 반드시 들여쓰기 (IndentationError 나면 scheduler가 죽음)
+  - 변경 후에는 airflow 프로세스 재시작 필요 (서버 reboot 불필요)
+
+  ———
