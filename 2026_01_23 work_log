@@ -19,3 +19,9 @@ python -m airflow version
 export AIRFLOW__CORE__DAGS_FOLDER=/home/linuxuser/wemarketing/Airflow_project/airflow/dags
 
 로 수정하면 AIRFLOW의 DB가 제대로 찾을 수 있음.
+
+3. apache-airflow 설치 코드 (공식 문서)
+```
+pip install "apache-airflow[celery]==3.1.6" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.1.6/constraints-3.10.txt"
+```
+
