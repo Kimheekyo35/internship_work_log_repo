@@ -25,3 +25,7 @@ export AIRFLOW__CORE__DAGS_FOLDER=/home/linuxuser/wemarketing/Airflow_project/ai
 pip install "apache-airflow[celery]==3.1.6" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.1.6/constraints-3.10.txt"
 ```
 
+4. PATH를 꼼꼼하게 읽어야될 듯
+PATH를 보면 내가 어떤 가상환경에 접속되어있고, 어떤 라이브러리를 어느 가상환경에 설치했는지 알 수 있는데 제대로 안 봄
+
+## AI Prompt를 어떻게 짜야 효율적으로 짤 수 있는지 고민하기 + AI를 제대로 활용하는 방법 생각하기
