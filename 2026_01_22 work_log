@@ -1,0 +1,51 @@
+# 2026_01_22 work_log
+
+## 오늘 한 일
+- airflow에서 오류 발생 시 슬랙으로 알림 올 수 있게 수정
+- 기존에는 '온에어'가 들어가는 시트를 모두 작성했는데 지금은 '온에어'가 들어가면 알아서 시트를 조회할 수 있게 수정
+
+### Slack으로 알림오는 방법
+
+1. Slack에서 새로운 프로젝트를 생성한 뒤, Bot User OAuth Token을 발급받음.
+2. VisualStudio에서 slack전용 파이썬 코드를 작성해준 후, dag파이썬 파일에서 import 해야 함
+
+다음은 SlackWebhook.py
+
+```
+import requests
+
+def send_messages(name, message):
+    url = {SLACKWEBHOOK_URL}
+    icon_emoji = ":crying_cat_face:"
+    channel = '#프로젝트-테스트'
+    payload = {"channel":channel, "username":name, "text":message, "icon_emoji":icon_emoji}
+
+    requests.post(url, json=payload)
+
+def airflow_failed_callback(context):
+    message=f"""
+        :red_circle: Task Failed.
+            '\n`DAG` : {context.get("task_instance").dag_id}'
+            '\n`Task` : {context.get("task_instance").task_id}'
+            '\n`Run ID` : {context.get("run_id")}'
+            '\n`Date` : {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
+            '\n`URL`: {context.get('task_instance').log_url}
+        """
+    send_messages("Airflow",message)
+```
+이제 내가 활용할 dag 파이썬 파일에 와서 해당 파일을 import해주면 됨.
+
+```
+import Slackwebhook
+한 후,
+default_args에 성공할 시 -> on_success_callback' : Slackwebhook.airflow_success_message -> 함수 호출
+
+만약 모든 Task의 결과를 알고 싶지 않고 특정 Task의 성공 유무만 알고싶다면 필요없는 Task는 on_success_callback = None 이렇게 꺼주면 됨.
+
+### '온에어'만 있는 시트 추출하는 방법
+SHEET_NAME_KEYWORD = os.getenv("SHEET_NAME_KEYWORD", "온에어")
+DEFAULT_HEADER_ROW = int(os.getenv("HEADER_ROW", "8"))
+
+-> slack으로 알림이 오는 기능을 활용해, 어떤 dag/task에서 에러가 발생하는지 알 수 있음
+-> 시트가 추가되어도 따로 list에 추가하지 않고 '온에어'부분만 가져와서 효율성 증가
+
