@@ -1,0 +1,21 @@
+# 2026_01_23 work_log
+
+## 문제점
+최상위 폴더의 이름을 고쳤더니 경로 충돌 문제 발생
+-> airflow, db를 제대로 찾지 못함
+
+1. airflow
+```
+deactivate 2>/dev/null || true
+cd /home/linuxuser/wemarketing/Airflow_project
+source airflow_env/bin/activate
+which python
+python -m airflow version
+```
+
+-> 다음과 같이 설정하여 airflow의 경로를 바꿀 수 있음
+
+2. DB 경로 찾기
+export AIRFLOW__CORE__DAGS_FOLDER=/home/linuxuser/wemarketing/Airflow_project/airflow/dags
+
+로 수정하면 AIRFLOW의 DB가 제대로 찾을 수 있음.
