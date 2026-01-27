@@ -12,3 +12,48 @@
 
 ## 오늘의 목표
 - Docker를 이해하고 Airflow를 컨테이너화 시키기
+- Test 돌렸을 때 제대로 돌아가는 지 확인
+
+
+#-------------Docker 도입 과정---------------#
+1. 현재 가상머신(VM)에서 진행 중
+ - 이미 docker가 설치되어있던 상황
+
+docker ps - 현재 상태
+docker rm -f <CONTAINER_NAME> - 컨테이너 강제 삭제
+
+docker compose down -> 컨테이너 끄기
+docker compose up -d --build -> yml 수정했을 시 업데이터하고 컨테이너 새로 열기
+
+---------------docker-compose.yml----------------
+```
+services:
+  airflow:
+    build:
+      context: .
+      dockerfile: docker/airflow_doc/Dockerfile
+    container_name: airflow
+    ports:
+      - "8082:8080"
+    environment:
+      # dag 파일 경로 지정
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
+      # dag examples 설정
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false" 
+      # 기본 포트 설정
+      AIRFLOW__WEBSERVER__BASE_URL: http://localhost:8082
+    volumes:
+      # 서버 주소 : 도커 주소 (지정해주는 방법)
+      - /home/linuxuser/wemarketing/Airflow_project/airflow/dags:/opt/airflow/dags
+
+    # 컨테이너가 시작될 때 airflow standalone 명령을 실행하라는 뜻
+    command: ["airflow", "standalone"]
+    # 컨테이너가 죽으면 자동으로 재시작
+    restart: unless-stopped
+```
+
+- Dockerfile과 docker-compose.yml의 차이
+Dockerfile → “이미지 만드는 레시피”
+docker-compose.yml → “컨테이너 실행/구성 방법”
+
+
